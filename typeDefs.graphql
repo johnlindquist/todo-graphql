@@ -1,0 +1,22 @@
+type Todo {
+  id: ID!
+  name: String!
+  done: Boolean
+  parentId: ID
+  parent: Todo
+  children: [Todo!]!
+}
+
+type Query {
+  allTodos: [Todo!]!
+  searchTodos(term: String!): [Todo!]!
+}
+
+type Mutation {
+  addTodo(name: String!): Todo!
+  removeTodo(id: ID!): [Todo!]!
+  toggleDone(id: ID!): Todo!
+  reset: [Todo!]!
+  hardReset: [Todo!]!
+  addParent(id: ID!, parentId: ID!): Todo!
+}
