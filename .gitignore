@@ -76,3 +76,5 @@ typings/
 .fusebox/
 
 db.json
+dist
+.vscode

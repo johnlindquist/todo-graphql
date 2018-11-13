@@ -19,4 +19,5 @@ type Mutation {
   reset: [Todo!]!
   hardReset: [Todo!]!
   addParent(id: ID!, parentId: ID!): Todo!
+  addParentByName(name: String!, parentName: String!): Todo!
 }

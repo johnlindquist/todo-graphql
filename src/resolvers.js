@@ -28,20 +28,31 @@ export default {
           done: false
         })
         .write(),
-    addParent: (parent, { id, parentId }, { todos }) => {
-      return todos
+    addParent: (parent, { id, parentId }, { todos }) =>
+      todos
         .getById(id)
         .update("parentId", () => parentId)
-        .write()
-    },
-    toggleDone: (parent, { id }, { todos }) => {
-      return todos
+        .write(),
+    addParentByName: (
+      parent,
+      { name, parentName },
+      { todos }
+    ) =>
+      todos
+        .find(todo => todo.name === name)
+        .update("parentId", () =>
+          todos
+            .find(todo => todo.name === parentName)
+            .get("id")
+            .value()
+        )
+        .write(),
+    toggleDone: (parent, { id }, { todos }) =>
+      todos
         .getById(id)
         .update("done", done => !done)
-        .write()
-    },
-    removeTodo: (parent, { id }, { todos }) => {
-      return todos.remove(todo => todo.id === id).write()
-    }
+        .write(),
+    removeTodo: (parent, { id }, { todos }) =>
+      todos.remove(todo => todo.id === id).write()
   }
 }
