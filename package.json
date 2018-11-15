@@ -1,29 +1,41 @@
 {
   "name": "todo-graphql",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.x.x"
+  },
   "description": "",
-  "main": "dist/index.js",
+  "scripts": {
+    "dev": "npx parcel ./index.js --target=node & nodemon --exec 'node -r dotenv/config' --watch ./dist/index.js ./dist/index.js",
+    "build": "npx parcel build ./index.js --target=node && npx parcel build ./www/index.html -d ./dist/public",
+    "start": "node ./dist/index.js"
+  },
+  "repository": "git+https://github.com/johnlindquist/todo-graphql.git",
+  "keywords": [],
+  "author": "John Lindquist <johnlindquist@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnlindquist/todo-graphql/issues"
+  },
+  "homepage": "https://github.com/johnlindquist/todo-graphql#readme",
   "dependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "apollo-boost": "^0.1.20",
     "apollo-server": "^2.2.1",
+    "apollo-server-express": "^2.2.2",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
     "graphql": "^14.0.2",
-    "json-server": "^0.14.0",
     "lodash": "^4.17.11",
     "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "micro": "^9.3.3",
+    "parcel-bundler": "^1.10.3",
+    "react": "^16.6.3",
+    "react-apollo": "^2.3.1",
+    "react-dom": "^16.6.3",
+    "www": "file:www"
   },
-  "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "nodemon": "^1.18.6",
-    "parcel-bundler": "^1.10.3"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/index.js",
-    "dev": "parcel src/index.js --target=node & nodemon --watch dist/index.js dist/index.js",
-    "build": "parcel build src/index.js --target=node"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "main": "index.js"
 }
