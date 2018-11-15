@@ -16,12 +16,26 @@ import gql from "graphql-tag"
 
 const cache = new InMemoryCache()
 
+const uri =
+  process.env.NODE_ENV === "development"
+    ? "localhost:4000"
+    : process.env.NOW_URL
+
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql"
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000/graphql"
+      : `${process.env.NOW_URL}/graphql`
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/graphql`,
+  uri:
+    process.env.NODE_ENV === "development"
+      ? `ws://localhost:4000/graphql`
+      : `wss://${process.env.NOW_URL}`.replace(
+          "https://",
+          ""
+        ) + `/graphql`,
   options: {
     reconnect: true
   }
@@ -98,7 +112,7 @@ class NewTodo extends Component {
                 this.setState({ value: e.target.value })
               }
             />
-            <button type="submit">Add</button>"
+            <button type="submit">Add</button>
           </form>
         )}
       </Mutation>
@@ -108,6 +122,7 @@ class NewTodo extends Component {
 
 const App = () => (
   <ApolloProvider client={client}>
+    <h1>{uri}</h1>
     <NewTodo />
     <Query query={ALL_TODOS_QUERY}>
       {({ loading, data, error, subscribeToMore }) => (
