@@ -3,32 +3,33 @@ import typeDefs from "./api/typeDefs.gql"
 import resolvers from "./api/resolvers"
 import { ApolloServer, PubSub } from "apollo-server-express"
 import express, { static } from "express"
+import { createServer } from "http"
 
 const app = express()
-//https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 
 const pubsub = new PubSub()
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: { todos, pubsub }
+  context: { todos, pubsub },
+  subscriptions: { path: "/graphql" }
 })
 
 server.applyMiddleware({ app, path: "/graphql" })
+const httpServer = createServer(app)
+server.installSubscriptionHandlers(httpServer)
 
 if (process.env.NODE_ENV === "development") {
   const Bundler = require("parcel-bundler")
-  const file = "www/index.html" // Pass an absolute path to the entrypoint here
-  const options = {} // See options section of api docs, for the possibilities
+  const bundler = new Bundler("www/index.html", {})
 
-  // // Initialize a new bundler using a file and options
-  const bundler = new Bundler(file, options)
-
-  // Let express use the bundler middleware, this will let Parcel handle every request over your express server
   app.use(bundler.middleware())
 } else {
   app.use("/", static("./dist/public"))
 }
 
-app.listen(4000)
+const port = 4000
+httpServer.listen({ port }, () => {
+  console.log(`running on port ${port}`)
+})

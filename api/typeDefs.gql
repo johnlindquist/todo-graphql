@@ -21,3 +21,7 @@ type Mutation {
   addParent(id: ID!, parentId: ID!): Todo!
   addParentByName(name: String!, parentName: String!): Todo!
 }
+
+type Subscription {
+  todoAdded: Todo
+}

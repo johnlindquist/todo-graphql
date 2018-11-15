@@ -21,13 +21,18 @@ export default {
   Mutation: {
     reset: (parent, args, { todos }) => todos.reset(),
     reset: (parent, args, { todos }) => todos.hardReset(),
-    addTodo: (parent, { name }, { todos }) =>
-      todos
+    addTodo: (parent, { name }, { todos, pubsub }) => {
+      const todo = todos
         .insert({
           name,
           done: false
         })
-        .write(),
+        .write()
+      console.log({ todo })
+      pubsub.publish("todo-added", { todoAdded: todo })
+
+      return todo
+    },
     addParent: (parent, { id, parentId }, { todos }) =>
       todos
         .getById(id)
@@ -54,5 +59,12 @@ export default {
         .write(),
     removeTodo: (parent, { id }, { todos }) =>
       todos.remove(todo => todo.id === id).write()
+  },
+  Subscription: {
+    todoAdded: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: (parent, args, { pubsub }) =>
+        pubsub.asyncIterator("todo-added")
+    }
   }
 }

@@ -7,7 +7,7 @@
   "description": "",
   "scripts": {
     "dev": "npx parcel ./index.js --target=node & nodemon --exec 'node -r dotenv/config' --watch ./dist/index.js ./dist/index.js",
-    "build": "npx parcel build ./index.js --target=node && npx parcel build ./www/index.html -d ./dist/public",
+    "build": "npx parcel build ./index.js --target=node && npm run --prefix www build -- -d ../dist/public",
     "start": "node ./dist/index.js"
   },
   "repository": "git+https://github.com/johnlindquist/todo-graphql.git",
@@ -19,8 +19,6 @@
   },
   "homepage": "https://github.com/johnlindquist/todo-graphql#readme",
   "dependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "apollo-boost": "^0.1.20",
     "apollo-server": "^2.2.1",
     "apollo-server-express": "^2.2.2",
@@ -31,11 +29,14 @@
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
     "micro": "^9.3.3",
-    "parcel-bundler": "^1.10.3",
     "react": "^16.6.3",
     "react-apollo": "^2.3.1",
     "react-dom": "^16.6.3",
     "www": "file:www"
   },
-  "main": "index.js"
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "parcel-bundler": "^1.10.3"
+  }
 }
